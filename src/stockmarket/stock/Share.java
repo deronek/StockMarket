@@ -1,4 +1,4 @@
-package stockmarket;
+package stockmarket.stock;
 
 public class Share extends AbstractStock {
     public Share(String name) {

@@ -2,6 +2,7 @@ package stockmarket;
 
 import stockmarket.exceptions.InvalidNumberOfSharesException;
 import stockmarket.exceptions.InvalidPriceException;
+import stockmarket.stock.Stock;
 import stockmarket.user.Trade;
 import stockmarket.user.User;
 import stockmarket.util.MyRandom;
@@ -112,11 +113,6 @@ public class StockMarket {
 
         return s.toString();
     }
-
-    public void addStock(Stock stock) {
-        addStockToMap(stock);
-    }
-
 
     public Set<String> getStockNames() {
         return stocks.keySet();

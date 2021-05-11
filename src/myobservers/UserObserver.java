@@ -1,7 +1,9 @@
-import stockmarket.listeners.Event;
-import stockmarket.listeners.Observer;
-import stockmarket.listeners.TradeCompletedEvent;
-import stockmarket.listeners.TradeFailedEvent;
+package myobservers;
+
+import stockmarket.events.Event;
+import stockmarket.events.Observer;
+import stockmarket.events.TradeCompletedEvent;
+import stockmarket.events.TradeFailedEvent;
 
 public class UserObserver implements Observer {
     @Override

@@ -1,4 +1,4 @@
-package stockmarket.listeners;
+package stockmarket.events;
 
 import stockmarket.user.Trade;
 

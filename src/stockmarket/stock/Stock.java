@@ -1,6 +1,6 @@
-package stockmarket;
+package stockmarket.stock;
 
-import stockmarket.exceptions.InvalidNumberOfSharesException;
+import stockmarket.StockMarketSettings;
 import stockmarket.exceptions.InvalidPriceException;
 import stockmarket.util.MyRandom;
 

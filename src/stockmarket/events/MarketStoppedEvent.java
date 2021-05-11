@@ -1,4 +1,4 @@
-package stockmarket.listeners;
+package stockmarket.events;
 
 public class MarketStoppedEvent implements Event {
     private final Throwable cause;

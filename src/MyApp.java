@@ -1,4 +1,6 @@
-import stockmarket.Share;
+import myobservers.MarketObserver;
+import myobservers.UserObserver;
+import stockmarket.stock.Share;
 import stockmarket.StockMarket;
 import stockmarket.TickTask;
 import stockmarket.exceptions.InvalidTradeQuantityException;
@@ -12,9 +14,9 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class UserInput {
+public class MyApp {
     private static final String BLEDNY_WYBOR = "Bledny wybor.";
-    private static final String PODANO_BLEDNE_DANE = "Podano błęden dane.";
+    private static final String PODANO_BLEDNE_DANE = "Podano błędne dane.";
     private static final Scanner scanner = new Scanner(System.in);
 
     private final StockMarket stockMarket;
@@ -22,8 +24,8 @@ public class UserInput {
     private final PrintMarketTask printMarketTask;
     private final User user;
 
-    public UserInput(StockMarket stockMarket) {
-        this.stockMarket = stockMarket;
+    public MyApp() {
+        this.stockMarket = new StockMarket();
 
         this.tickTask = new TickTask(stockMarket);
         tickTask.addObserver(new MarketObserver());
@@ -35,12 +37,16 @@ public class UserInput {
         user.addObserver(new UserObserver());
     }
 
+    public static void main(String[] args) {
+        MyApp myApp = new MyApp();
+        myApp.askUserInput();
+    }
+
     public void askUserInput() {
+        //noinspection InfiniteLoopStatement
         while (true) {
             printMenu();
-
             String input = scanner.nextLine();
-
             parseUserInput(input);
         }
     }
@@ -66,11 +72,6 @@ public class UserInput {
             int input = Integer.parseInt(s);
             switch (input) {
                 case 1 -> {
-/*                    Thread t = new Thread(
-                            new RunMarket(
-                                    tickTask,
-                                    stockMarket));
-                    t.start();*/
                     startMarket();
                     scanner.nextLine();
                     stopMarket();

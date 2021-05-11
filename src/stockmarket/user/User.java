@@ -1,13 +1,13 @@
 package stockmarket.user;
 
-import stockmarket.Share;
+import stockmarket.stock.Share;
 import stockmarket.StockMarket;
 import stockmarket.exceptions.InvalidNumberOfSharesException;
 import stockmarket.exceptions.InvalidTradeQuantityException;
 import stockmarket.exceptions.NoSuchStockException;
-import stockmarket.listeners.Observable;
-import stockmarket.listeners.Observer;
-import stockmarket.listeners.*;
+import stockmarket.events.Observable;
+import stockmarket.events.Observer;
+import stockmarket.events.*;
 
 import java.util.*;
 

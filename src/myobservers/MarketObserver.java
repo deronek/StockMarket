@@ -1,7 +1,9 @@
+package myobservers;
+
 import stockmarket.exceptions.InvalidPriceException;
-import stockmarket.listeners.Event;
-import stockmarket.listeners.MarketStoppedEvent;
-import stockmarket.listeners.Observer;
+import stockmarket.events.Event;
+import stockmarket.events.MarketStoppedEvent;
+import stockmarket.events.Observer;
 
 public class MarketObserver implements Observer {
     @Override

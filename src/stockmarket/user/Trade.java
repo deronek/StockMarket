@@ -1,11 +1,10 @@
 package stockmarket.user;
 
-import stockmarket.AbstractStock;
+import stockmarket.stock.AbstractStock;
 
 public class Trade extends AbstractStock {
     private final TradeType tradeType;
     private final int price;
-    private boolean failed;
 
     public Trade(String name, TradeType tradeType, int price, int quantity) {
         super(name, quantity);
@@ -48,13 +47,5 @@ public class Trade extends AbstractStock {
 
     public int getPrice() {
         return price;
-    }
-
-    public boolean isFailed() {
-        return failed;
-    }
-
-    public void setFailed(boolean failed) {
-        this.failed = failed;
     }
 }

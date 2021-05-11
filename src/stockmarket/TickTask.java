@@ -1,9 +1,9 @@
 package stockmarket;
 
-import stockmarket.listeners.Event;
-import stockmarket.listeners.MarketStoppedEvent;
-import stockmarket.listeners.Observable;
-import stockmarket.listeners.Observer;
+import stockmarket.events.Event;
+import stockmarket.events.MarketStoppedEvent;
+import stockmarket.events.Observable;
+import stockmarket.events.Observer;
 
 import java.util.ArrayList;
 import java.util.List;

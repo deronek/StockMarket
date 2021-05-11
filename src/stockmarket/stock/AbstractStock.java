@@ -1,4 +1,4 @@
-package stockmarket;
+package stockmarket.stock;
 
 import stockmarket.exceptions.InvalidNumberOfSharesException;
 
