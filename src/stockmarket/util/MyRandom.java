@@ -15,7 +15,7 @@ public final class MyRandom {
         return ThreadLocalRandom.current().nextDouble(min, max + 1);
     }
 
-    public static int[] getRandomInts(int size, int min, int max) {
+    public static int[] getUniqueRandomInts(int size, int min, int max) {
         return ThreadLocalRandom.current()
                 .ints(min, max + 1)
                 .distinct()

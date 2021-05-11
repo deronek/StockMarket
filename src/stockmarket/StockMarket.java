@@ -30,7 +30,7 @@ public class StockMarket {
                 StockMarketSettings.MAX_INITIAL_STOCKS
         );
 
-        int[] stockNamesIndex = MyRandom.getRandomInts(
+        int[] stockNamesIndex = MyRandom.getUniqueRandomInts(
                 numberStocksToAdd,
                 0,
                 StockMarketSettings.STOCK_NAMES.length - 1
