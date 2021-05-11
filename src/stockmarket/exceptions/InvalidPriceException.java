@@ -1,20 +1,20 @@
 package stockmarket.exceptions;
 
 public class InvalidPriceException extends Exception {
-    private final String stockName;
-    private final int stockPrice;
+    private final String name;
+    private final int price;
 
-    public InvalidPriceException(String message, String stockName, int stockPrice) {
+    public InvalidPriceException(String message, String name, int price) {
         super(message);
-        this.stockName = stockName;
-        this.stockPrice = stockPrice;
+        this.name = name;
+        this.price = price;
     }
 
-    public String getStockName() {
-        return stockName;
+    public String getName() {
+        return name;
     }
 
-    public int getStockPrice() {
-        return stockPrice;
+    public int getPrice() {
+        return price;
     }
 }

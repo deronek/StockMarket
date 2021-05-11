@@ -1,4 +1,4 @@
-package stockmarket;
+package stockmarket.user;
 
 public enum TradeType {
     BUY,

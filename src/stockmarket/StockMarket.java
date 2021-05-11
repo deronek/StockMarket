@@ -1,27 +1,28 @@
 package stockmarket;
 
+import stockmarket.exceptions.InvalidNumberOfSharesException;
 import stockmarket.exceptions.InvalidPriceException;
+import stockmarket.user.Trade;
+import stockmarket.user.User;
+import stockmarket.util.MyRandom;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 public class StockMarket {
     private final HashMap<String, Stock> stocks = new HashMap<>();
-    private final HashSet<Trade> trades = new HashSet<>();
+    private final HashSet<User> users = new HashSet<>();
 
     public StockMarket() {
-        intializeMarket();
+        initializeMarket();
     }
 
     private void addStockToMap(Stock stock) {
         stocks.put(stock.getName(), stock);
     }
 
-    public Stock getStock(String name) {
-        return stocks.get(name);
-    }
-
-    private void intializeMarket() {
+    private void initializeMarket() {
         stocks.clear();
         int numberStocksToAdd = MyRandom.getRandomInt(
                 StockMarketSettings.MIN_INITIAL_STOCKS,
@@ -40,23 +41,74 @@ public class StockMarket {
                     MyRandom.getRandomInt(
                             StockMarketSettings.MIN_INTIAL_PRICE,
                             StockMarketSettings.MAX_INTIAL_PRICE
+                    ),
+                    MyRandom.getRandomInt(
+                            StockMarketSettings.MIN_INITIAL_STOCK_QUANTITY,
+                            StockMarketSettings.MAX_INITIAL_STOCK_QUANTITY
                     ));
 
             addStockToMap(stock);
         }
     }
 
-    public void randomTick() throws InvalidPriceException {
+    public void marketTick() throws InvalidNumberOfSharesException, InvalidPriceException {
+        marketFluctuate();
+        performPossibleTrades();
+    }
+
+    private void performPossibleTrades() throws InvalidNumberOfSharesException, InvalidPriceException {
+        for (User user : users) {
+            Set<Trade> trades = user.getTrades();
+            for (Trade trade : trades) {
+                Stock stock = stocks.get(trade.getName());
+                if (isPossibleTrade(stock, trade)) performTrade(user, trade, stock);
+            }
+        }
+
+    }
+
+    private boolean isPossibleTrade(Stock stock, Trade trade) {
+        switch (trade.getTradeType()) {
+            case BUY -> {
+                return stock.getPrice() <= trade.getPrice();
+            }
+            case SELL -> {
+                return stock.getPrice() >= trade.getPrice();
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + trade.getTradeType());
+        }
+    }
+
+    private void performTrade(User user, Trade trade, Stock stock) throws InvalidNumberOfSharesException, InvalidPriceException {
+        double strength = MyRandom.getGaussianRandomDouble(StockMarketSettings.TRADE_VOLATILITY);
+        double change = strength * ((double) trade.getQuantity() / stock.getQuantity()) * trade.getPrice();
+
+        switch (trade.getTradeType()) {
+            case BUY -> {
+                stock.changePrice((int) change);
+                stock.removeShares(trade.getQuantity());
+            }
+            case SELL -> {
+                stock.changePrice((int) -change);
+                stock.addShares(trade.getQuantity());
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + trade.getTradeType());
+        }
+        user.removeTrade(trade);
+    }
+
+
+    private void marketFluctuate() throws InvalidPriceException {
         for (Stock stock : stocks.values()) {
             stock.randomTick();
         }
     }
 
-    public String stan() {
+    public String opis() {
         StringBuilder s = new StringBuilder();
         s.append("Aktualny stan rynku: ");
         s.append(System.lineSeparator());
-        stocks.forEach((name, stock) -> s.append(stock.stan()));
+        stocks.forEach((name, stock) -> s.append(stock.opis()));
 
         return s.toString();
     }
@@ -65,8 +117,14 @@ public class StockMarket {
         addStockToMap(stock);
     }
 
-    public void addTrade(String stockName, TradeType tradeType, int price) {
 
+    public Set<String> getStockNames() {
+        return stocks.keySet();
+    }
+
+    public boolean isValidSellTrade(Trade trade) {
+        Stock stock = stocks.get(trade.getName());
+        return stock.getQuantity() >= trade.getQuantity();
     }
 
     @Override
@@ -74,5 +132,9 @@ public class StockMarket {
         return "StockMarket{" +
                 "stocks=" + stocks +
                 '}';
+    }
+
+    public void addUser(User user) {
+        users.add(user);
     }
 }

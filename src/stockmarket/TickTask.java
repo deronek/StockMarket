@@ -1,26 +1,34 @@
 package stockmarket;
 
+import stockmarket.listeners.Event;
+import stockmarket.listeners.MarketStoppedEvent;
+import stockmarket.listeners.Observable;
+import stockmarket.listeners.Observer;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.*;
 
-public class TickTask {
+public class TickTask implements Observable {
     private static final int INITIAL_DELAY = 0;
     private final ScheduledExecutorService scheduler =
             Executors.newScheduledThreadPool(1);
 
     private final StockMarket stockMarket;
     private ScheduledFuture<?> tickerHandle;
-    private Throwable cause;
+    private final List<Observer> observers = new ArrayList<>();
 
     public TickTask(StockMarket stockMarket) {
         this.stockMarket = stockMarket;
     }
 
-    public void start(StockMarket stockMarket) {
+    public void start() {
         Runnable ticker = () -> {
             try {
-                stockMarket.randomTick();
+                stockMarket.marketTick();
             } catch (Throwable e) {
-                cause = e;
+                MarketStoppedEvent event = new MarketStoppedEvent(e);
+                notifyObservers(event);
                 tickerHandle.cancel(true);
             }
         };
@@ -45,7 +53,20 @@ public class TickTask {
         return tickerHandle.get();
     }
 
-    public Throwable getCause() {
-        return cause;
+    @Override
+    public void addObserver(Observer o) {
+        observers.add(o);
+    }
+
+    @Override
+    public void removeObserver(Observer o) {
+        observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(Event e) {
+        for (Observer o : observers) {
+            o.onEvent(e);
+        }
     }
 }

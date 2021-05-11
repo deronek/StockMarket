@@ -16,9 +16,7 @@ public class PrintMarketTask {
     }
 
     public void start() {
-        Runnable ticker = () -> {
-            System.out.println(stockMarket.stan());
-        };
+        Runnable ticker = () -> System.out.println(stockMarket.opis());
 
         this.tickerHandle = scheduler.scheduleAtFixedRate(
                 ticker,

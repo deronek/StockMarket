@@ -1,63 +1,75 @@
 package stockmarket;
 
+import stockmarket.exceptions.InvalidNumberOfSharesException;
 import stockmarket.exceptions.InvalidPriceException;
+import stockmarket.util.MyRandom;
 
-public class Stock {
-    private final String name;
+import java.util.Objects;
+
+public class Stock extends AbstractStock {
     private int price;
     private int change;
-    private int quantity;
 
-    public Stock(String name, int price) {
+    public Stock(String name, int price, int quantity) {
+        super(name, quantity);
         try {
-            if (name == null) throw new IllegalArgumentException("Nazwa nie może być pusta");
-            this.name = name;
             setPrice(price);
         } catch (InvalidPriceException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public String getName() {
-        return name;
-    }
-
     public int getPrice() {
         return price;
-    }
-
-    private void setPrice(int price) throws InvalidPriceException {
-        if (price > StockMarketSettings.MAX_PRICE || price < StockMarketSettings.MIN_PRICE) {
-            throw new InvalidPriceException("Próba ustawienia ceny poza zakresem", name, price);
-        }
-        this.price = price;
     }
 
     public int getChange() {
         return change;
     }
 
-    private void setChange(int change) {
-        this.change = change;
-    }
-
     public void randomTick() throws InvalidPriceException {
         double maxFluctiation = price * StockMarketSettings.RANDOM_TICK_FLUCTUATION;
         double change = MyRandom.getGaussianRandomDouble(maxFluctiation);
-        setPrice(getPrice() + (int) change);
-        setChange((int) change);
+        changePrice((int) change);
     }
 
-    public String stan() {
-        String changeFormatted = (change > 0 ? "+" : "") + change;
-        return String.format("Nazwa: %-8sCena: %-6d(%s)%n", name, price, changeFormatted);
+    private void setPrice(int price) throws InvalidPriceException {
+        if (price > StockMarketSettings.MAX_PRICE || price < StockMarketSettings.MIN_PRICE) {
+            throw new InvalidPriceException("Próba ustawienia ceny poza zakresem", getName(), price);
+        }
+        this.price = price;
+    }
+
+    public void changePrice(int change) throws InvalidPriceException {
+        int newPrice = price + change;
+        setPrice(newPrice);
+        this.change = change;
+    }
+
+    public String opis() {
+        String changeFormatted = '(' + (change > 0 ? "+" : "") + change + ')';
+        return String.format("Nazwa: %-8sCena: %-6d%-10sIlość dostępnych udziałów: %-6d%n", getName(), getPrice(), changeFormatted, getQuantity());
     }
 
     @Override
     public String toString() {
         return "Stock{" +
-                "name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Stock)) return false;
+        if (!super.equals(o)) return false;
+        Stock stock = (Stock) o;
+        return getPrice() == stock.getPrice() && getChange() == stock.getChange();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getPrice(), getChange());
     }
 }

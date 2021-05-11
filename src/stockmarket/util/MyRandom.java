@@ -1,4 +1,4 @@
-package stockmarket;
+package stockmarket.util;
 
 import java.util.concurrent.ThreadLocalRandom;
 
