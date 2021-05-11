@@ -1,6 +1,5 @@
 package stockmarket.user;
 
-import stockmarket.stock.Share;
 import stockmarket.StockMarket;
 import stockmarket.exceptions.InvalidNumberOfSharesException;
 import stockmarket.exceptions.InvalidTradeQuantityException;

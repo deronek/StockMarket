@@ -1,4 +1,6 @@
-package stockmarket.stock;
+package stockmarket.user;
+
+import stockmarket.stock.AbstractStock;
 
 public class Share extends AbstractStock {
     public Share(String name) {

@@ -1,6 +1,6 @@
 import myobservers.MarketObserver;
 import myobservers.UserObserver;
-import stockmarket.stock.Share;
+import stockmarket.user.Share;
 import stockmarket.StockMarket;
 import stockmarket.TickTask;
 import stockmarket.exceptions.InvalidTradeQuantityException;
