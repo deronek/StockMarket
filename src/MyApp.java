@@ -52,12 +52,6 @@ public class MyApp {
     }
 
     private void printMenu() {
-        System.out.print("Giełda uruchomiona: ");
-        if (tickTask.isRunning())
-            System.out.println("TAK");
-        else
-            System.out.println("NIE");
-
         System.out.println("Wybierz akcje: ");
         System.out.println("#1: Uruchom/zatrzymaj giełdę");
         System.out.println("#2: Pokaż stan giełdy");
